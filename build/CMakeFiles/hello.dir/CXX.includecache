@@ -36,14 +36,6 @@ lib_uvc/libuvc.h
 opencv4/opencv2/opencv.hpp
 -
 
-/home/ss/pure_c_program/test/main.cpp
-iostream
--
-uvc_camera.h
--
-opencv4/opencv2/opencv.hpp
--
-
 /home/ss/pure_c_program/test/src/uvc_camera.cpp
 uvc_camera.h
 -
