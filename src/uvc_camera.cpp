@@ -9,7 +9,7 @@ UVCCamera::UVCCamera() : state_(kInitial), ctx_(NULL), dev_(NULL), devh_(NULL), 
   config_.index = 0;
   config_.width = 640;
   config_.height = 480;
-  config_.video_mode = "mjpeg";
+  //   config_.video_mode = "mjpeg"; // 这个是起作用的
   config_.frame_rate = 30;
   config_.timestamp_method = "start";
   config_.camera_info_url = "file:///tmp/cam.yaml";
@@ -42,35 +42,36 @@ bool UVCCamera::init() {
   return true;
 }
 
- void UVCCamera::openCamera(){
+void UVCCamera::openCamera() {
   assert(state_ == kStopped);
   // 读取设备信息
   int vendor_id = strtol(config_.vendor.c_str(), NULL, 0);
   int product_id = strtol(config_.product.c_str(), NULL, 0);
   printf("Opening camera with vendor=0x%x, product=0x%x\n", vendor_id, product_id);
-      // 设备指针的列表,按照id去搜寻设备
-      uvc_device_t **devs;
+  // 设备指针的列表,按照id去搜寻设备
+  uvc_device_t **devs;
   uvc_error_t find_err = uvc_find_devices(ctx_, &devs, vendor_id, product_id, config_.serial.empty() ? NULL : config_.serial.c_str());
   if (find_err != UVC_SUCCESS) {
     uvc_perror(find_err, "uvc_find_device");
     return;
   }
+
   // 按照bus号去找相机
   dev_ = NULL;
   int dev_idx = 0;
   while (devs[dev_idx] != NULL) {
     int bus_num = uvc_get_bus_number(devs[dev_idx]);
-    printf("device bus number: %d", bus_num);
-    if (bus_num == camera_loc_) {
-      dev_ = devs[dev_idx];
-    } else {
-      uvc_unref_device(devs[dev_idx]);
-    }
+    printf("device bus number: %d\n", bus_num);
+    // if (bus_num == camera_loc_) {
+    dev_ = devs[dev_idx];
+    break;
+    // } else {
+    //   uvc_unref_device(devs[dev_idx]);
+    // }
     dev_idx++;
   }
   // 打开指定bus的相机
   uvc_error_t open_err = uvc_open(dev_, &devh_);
-
   if (open_err != UVC_SUCCESS) {
     switch (open_err) {
       case UVC_ERROR_ACCESS:
@@ -84,9 +85,8 @@ bool UVCCamera::init() {
     uvc_unref_device(dev_);
     return;
   }
-
   if (open_err == UVC_SUCCESS) {
-    printf("Successfully open camera!!");
+    printf("Successfully open camera!\n");
   }
 
   // 获取数据流
@@ -129,7 +129,46 @@ bool UVCCamera::init() {
 void UVCCamera::ImageCallback(uvc_frame_t *frame) {
   assert(state_ == kRunning);
   assert(rgb_frame_);
-  // 这里是如何把数据存起来
+  // 这里是如何把数据存起来， libuvc有自己的格式转换功能， mjpeg转bgr会通道错误，yuyv可以正常转换
+  if (frame->frame_format == UVC_FRAME_FORMAT_BGR) {
+    // printf("bgr8.....\n");
+  } else if (frame->frame_format == UVC_FRAME_FORMAT_RGB) {
+    printf("rgb8.....\n");
+
+  } else if (frame->frame_format == UVC_FRAME_FORMAT_UYVY) {
+    // printf("yuv422.....\n");
+  } else if (frame->frame_format == UVC_FRAME_FORMAT_YUYV) {
+    // printf("YUYV2BGR.....\n");
+    // FIXME: uvc_any2bgr does not work on "yuyv" format, so use uvc_yuyv2bgr directly.
+    uvc_error_t conv_ret = uvc_yuyv2bgr(frame, rgb_frame_);
+    if (conv_ret != UVC_SUCCESS) {
+      uvc_perror(conv_ret, "Couldn't convert frame to RGB\n");
+      return;
+    } else {
+      //   printf("frame converted\n");
+    }
+  } else if (frame->frame_format == UVC_FRAME_FORMAT_MJPEG) {
+    // printf("uvc_mjpeg2rgb...\n");
+    uvc_error_t conv_ret = uvc_mjpeg2rgb(frame, rgb_frame_);
+    if (conv_ret != UVC_SUCCESS) {
+      uvc_perror(conv_ret, "Couldn't convert frame to RGB");
+      return;
+    }
+    // printf("converted frame\n");
+  } else {
+    printf("uvc_any2bgr.....\n");
+    uvc_error_t conv_ret = uvc_any2bgr(frame, rgb_frame_);
+    if (conv_ret != UVC_SUCCESS) {
+      uvc_perror(conv_ret, "Couldn't convert frame to RGB");
+      return;
+    }
+    printf("frame converted\n");
+  }
+
+  cv::Mat img = cv::Mat(config_.height, config_.width, CV_8UC3, rgb_frame_->data);  // cv::Scalar(0, 0, 0)
+  cv::namedWindow("rgb", 0);
+  cv::imshow("rgb", img);
+  cv::waitKey(1);
 }
 
 enum uvc_frame_format UVCCamera::GetVideoMode(std::string vmode) {
