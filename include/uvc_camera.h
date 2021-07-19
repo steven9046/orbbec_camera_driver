@@ -1,10 +1,9 @@
-#ifndef UVC_CAMERA_H_
-#define UVC_CAMERA_H_
+#ifndef _UVC_CAMERA_H_
+#define _UVC_CAMERA_H_
 
 #include <camera.h>
 #include <lib_uvc/UVCCameraConfig.h>
 #include <lib_uvc/libuvc.h>
-
 #include <opencv4/opencv2/opencv.hpp>
 
 // #include <cmath>

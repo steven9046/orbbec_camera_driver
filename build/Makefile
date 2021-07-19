@@ -177,6 +177,33 @@ src/camera.cpp.s:
 	$(MAKE) -f CMakeFiles/hello.dir/build.make CMakeFiles/hello.dir/src/camera.cpp.s
 .PHONY : src/camera.cpp.s
 
+src/oni_camera.o: src/oni_camera.cpp.o
+
+.PHONY : src/oni_camera.o
+
+# target to build an object file
+src/oni_camera.cpp.o:
+	$(MAKE) -f CMakeFiles/hello.dir/build.make CMakeFiles/hello.dir/src/oni_camera.cpp.o
+.PHONY : src/oni_camera.cpp.o
+
+src/oni_camera.i: src/oni_camera.cpp.i
+
+.PHONY : src/oni_camera.i
+
+# target to preprocess a source file
+src/oni_camera.cpp.i:
+	$(MAKE) -f CMakeFiles/hello.dir/build.make CMakeFiles/hello.dir/src/oni_camera.cpp.i
+.PHONY : src/oni_camera.cpp.i
+
+src/oni_camera.s: src/oni_camera.cpp.s
+
+.PHONY : src/oni_camera.s
+
+# target to generate assembly for a file
+src/oni_camera.cpp.s:
+	$(MAKE) -f CMakeFiles/hello.dir/build.make CMakeFiles/hello.dir/src/oni_camera.cpp.s
+.PHONY : src/oni_camera.cpp.s
+
 src/uvc_camera.o: src/uvc_camera.cpp.o
 
 .PHONY : src/uvc_camera.o
@@ -219,6 +246,9 @@ help:
 	@echo "... src/camera.o"
 	@echo "... src/camera.i"
 	@echo "... src/camera.s"
+	@echo "... src/oni_camera.o"
+	@echo "... src/oni_camera.i"
+	@echo "... src/oni_camera.s"
 	@echo "... src/uvc_camera.o"
 	@echo "... src/uvc_camera.i"
 	@echo "... src/uvc_camera.s"

@@ -6,6 +6,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/ss/pure_c_program/test/main.cpp" "/home/ss/pure_c_program/test/build/CMakeFiles/hello.dir/main.cpp.o"
   "/home/ss/pure_c_program/test/src/camera.cpp" "/home/ss/pure_c_program/test/build/CMakeFiles/hello.dir/src/camera.cpp.o"
+  "/home/ss/pure_c_program/test/src/oni_camera.cpp" "/home/ss/pure_c_program/test/build/CMakeFiles/hello.dir/src/oni_camera.cpp.o"
   "/home/ss/pure_c_program/test/src/uvc_camera.cpp" "/home/ss/pure_c_program/test/build/CMakeFiles/hello.dir/src/uvc_camera.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")

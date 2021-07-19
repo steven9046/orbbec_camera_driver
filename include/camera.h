@@ -1,7 +1,9 @@
-#ifndef CMAERA_H_
-#define CAMERA_H_
+// #ifndef _CMAERA_H_
+// #define _CAMERA_H_
+#pragma once
 #include <iostream>
 
+// namespace camera {
 class Camera {
  public:
   Camera();
@@ -17,5 +19,5 @@ class Camera {
  private:
   int camera_id;
 };
-
-#endif
+// }  // namespace camera
+// #endif

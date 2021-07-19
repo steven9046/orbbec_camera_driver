@@ -57,18 +57,18 @@ include CMakeFiles/hello.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/hello.dir/flags.make
 
-CMakeFiles/hello.dir/main.cpp.o: CMakeFiles/hello.dir/flags.make
-CMakeFiles/hello.dir/main.cpp.o: ../main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ss/pure_c_program/test/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/hello.dir/main.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/hello.dir/main.cpp.o -c /home/ss/pure_c_program/test/main.cpp
+CMakeFiles/hello.dir/src/camera.cpp.o: CMakeFiles/hello.dir/flags.make
+CMakeFiles/hello.dir/src/camera.cpp.o: ../src/camera.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ss/pure_c_program/test/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/hello.dir/src/camera.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/hello.dir/src/camera.cpp.o -c /home/ss/pure_c_program/test/src/camera.cpp
 
-CMakeFiles/hello.dir/main.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/hello.dir/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ss/pure_c_program/test/main.cpp > CMakeFiles/hello.dir/main.cpp.i
+CMakeFiles/hello.dir/src/camera.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/hello.dir/src/camera.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ss/pure_c_program/test/src/camera.cpp > CMakeFiles/hello.dir/src/camera.cpp.i
 
-CMakeFiles/hello.dir/main.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/hello.dir/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ss/pure_c_program/test/main.cpp -o CMakeFiles/hello.dir/main.cpp.s
+CMakeFiles/hello.dir/src/camera.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/hello.dir/src/camera.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ss/pure_c_program/test/src/camera.cpp -o CMakeFiles/hello.dir/src/camera.cpp.s
 
 CMakeFiles/hello.dir/src/uvc_camera.cpp.o: CMakeFiles/hello.dir/flags.make
 CMakeFiles/hello.dir/src/uvc_camera.cpp.o: ../src/uvc_camera.cpp
@@ -83,31 +83,46 @@ CMakeFiles/hello.dir/src/uvc_camera.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/hello.dir/src/uvc_camera.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ss/pure_c_program/test/src/uvc_camera.cpp -o CMakeFiles/hello.dir/src/uvc_camera.cpp.s
 
-CMakeFiles/hello.dir/src/camera.cpp.o: CMakeFiles/hello.dir/flags.make
-CMakeFiles/hello.dir/src/camera.cpp.o: ../src/camera.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ss/pure_c_program/test/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/hello.dir/src/camera.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/hello.dir/src/camera.cpp.o -c /home/ss/pure_c_program/test/src/camera.cpp
+CMakeFiles/hello.dir/src/oni_camera.cpp.o: CMakeFiles/hello.dir/flags.make
+CMakeFiles/hello.dir/src/oni_camera.cpp.o: ../src/oni_camera.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ss/pure_c_program/test/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/hello.dir/src/oni_camera.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/hello.dir/src/oni_camera.cpp.o -c /home/ss/pure_c_program/test/src/oni_camera.cpp
 
-CMakeFiles/hello.dir/src/camera.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/hello.dir/src/camera.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ss/pure_c_program/test/src/camera.cpp > CMakeFiles/hello.dir/src/camera.cpp.i
+CMakeFiles/hello.dir/src/oni_camera.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/hello.dir/src/oni_camera.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ss/pure_c_program/test/src/oni_camera.cpp > CMakeFiles/hello.dir/src/oni_camera.cpp.i
 
-CMakeFiles/hello.dir/src/camera.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/hello.dir/src/camera.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ss/pure_c_program/test/src/camera.cpp -o CMakeFiles/hello.dir/src/camera.cpp.s
+CMakeFiles/hello.dir/src/oni_camera.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/hello.dir/src/oni_camera.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ss/pure_c_program/test/src/oni_camera.cpp -o CMakeFiles/hello.dir/src/oni_camera.cpp.s
+
+CMakeFiles/hello.dir/main.cpp.o: CMakeFiles/hello.dir/flags.make
+CMakeFiles/hello.dir/main.cpp.o: ../main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ss/pure_c_program/test/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/hello.dir/main.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/hello.dir/main.cpp.o -c /home/ss/pure_c_program/test/main.cpp
+
+CMakeFiles/hello.dir/main.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/hello.dir/main.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ss/pure_c_program/test/main.cpp > CMakeFiles/hello.dir/main.cpp.i
+
+CMakeFiles/hello.dir/main.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/hello.dir/main.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ss/pure_c_program/test/main.cpp -o CMakeFiles/hello.dir/main.cpp.s
 
 # Object files for target hello
 hello_OBJECTS = \
-"CMakeFiles/hello.dir/main.cpp.o" \
+"CMakeFiles/hello.dir/src/camera.cpp.o" \
 "CMakeFiles/hello.dir/src/uvc_camera.cpp.o" \
-"CMakeFiles/hello.dir/src/camera.cpp.o"
+"CMakeFiles/hello.dir/src/oni_camera.cpp.o" \
+"CMakeFiles/hello.dir/main.cpp.o"
 
 # External object files for target hello
 hello_EXTERNAL_OBJECTS =
 
-hello: CMakeFiles/hello.dir/main.cpp.o
-hello: CMakeFiles/hello.dir/src/uvc_camera.cpp.o
 hello: CMakeFiles/hello.dir/src/camera.cpp.o
+hello: CMakeFiles/hello.dir/src/uvc_camera.cpp.o
+hello: CMakeFiles/hello.dir/src/oni_camera.cpp.o
+hello: CMakeFiles/hello.dir/main.cpp.o
 hello: CMakeFiles/hello.dir/build.make
 hello: /usr/local/lib/libopencv_gapi.so.4.5.1
 hello: /usr/local/lib/libopencv_highgui.so.4.5.1
@@ -117,7 +132,9 @@ hello: /usr/local/lib/libopencv_photo.so.4.5.1
 hello: /usr/local/lib/libopencv_stitching.so.4.5.1
 hello: /usr/local/lib/libopencv_video.so.4.5.1
 hello: /usr/local/lib/libopencv_videoio.so.4.5.1
-hello: ../libs/uvc_camera/libuvc.so
+hello: ../libs/libuvc/libuvc.so
+hello: ../libs/openni2/libOpenNI2.so
+hello: ../libs/openni2/OpenNI2/Drivers/liborbbec.so
 hello: /usr/local/lib/libopencv_dnn.so.4.5.1
 hello: /usr/local/lib/libopencv_imgcodecs.so.4.5.1
 hello: /usr/local/lib/libopencv_calib3d.so.4.5.1
@@ -126,7 +143,7 @@ hello: /usr/local/lib/libopencv_flann.so.4.5.1
 hello: /usr/local/lib/libopencv_imgproc.so.4.5.1
 hello: /usr/local/lib/libopencv_core.so.4.5.1
 hello: CMakeFiles/hello.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ss/pure_c_program/test/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable hello"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ss/pure_c_program/test/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable hello"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/hello.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

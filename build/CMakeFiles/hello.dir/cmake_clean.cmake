@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/hello.dir/main.cpp.o"
   "CMakeFiles/hello.dir/src/camera.cpp.o"
+  "CMakeFiles/hello.dir/src/oni_camera.cpp.o"
   "CMakeFiles/hello.dir/src/uvc_camera.cpp.o"
   "hello"
   "hello.pdb"
