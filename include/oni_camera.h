@@ -16,6 +16,8 @@
 // #include "pcl_conversions/pcl_conversions.h"
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
+#include <opencv4/opencv2/opencv.hpp>
+
 // #include <pcl/filters/extract_indices.h>
 // //ground camera tf calibraiton
 // #include <pcl/filters/statistical_outlier_removal.h>
@@ -48,7 +50,7 @@ class OniCamera : public Camera {
     openni::VideoMode oni_irVideoMode_;
 
     //
-    // openni::CoordinateConverter oni_converter;
+    openni::CoordinateConverter oni_converter;
 
     //
     OBCameraParams cameraParams_;
@@ -60,10 +62,10 @@ class OniCamera : public Camera {
     // void createPointCloud();
     void seOnitLDP(bool enable);
     std::string enumerateDevices();
-  //   void publishPointCloud(const cv::Mat& rgb_frame);
+    void generatePointCloud(const cv::Mat& rgb_frame);
     char camera_loc_;
   //   // point cloud
-    pcl::PointCloud<pcl::PointXYZRGB>::Ptr head_cloud_;
+    pcl::PointCloud<pcl::PointXYZRGB>::Ptr point_cloud_;
   //   ros::Publisher pub_;
   //   void calculateDepthHistgram(float dist_x, BinArray& depth_histogram, DistBinArray& bin_depth_sum_mm);
 };

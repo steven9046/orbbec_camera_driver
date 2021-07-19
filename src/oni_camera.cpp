@@ -25,6 +25,8 @@ bool OniCamera::oniEnvironmentInitialize() {
 void OniCamera::openCamera() {
   printf("going to open oni camera.\n");
   OpenOniCamera(depth_uri_str_.c_str());
+  // 
+  point_cloud_ = boost::make_shared<pcl::PointCloud<pcl::PointXYZRGB>>();
 }
 
 void OniCamera::closeCamera() { printf("oni camera.\n"); }
@@ -130,7 +132,7 @@ bool OniCamera::OpenOniCamera(const char* depth_uri) {
   //   // ROS_ERROR(OpenNI::getExtendedError());
   //   return false;
   // }
-  // head_cloud_ = boost::make_shared<pcl::PointCloud<pcl::PointXYZRGB>>();
+  // point_cloud_ = boost::make_shared<pcl::PointCloud<pcl::PointXYZRGB>>();
   return true;
 }
 
@@ -187,77 +189,74 @@ bool OniCamera::GetOniStreamData() {
   return true;
 }
 
-// void OniCamera::publishPointCloud(const cv::Mat &rgb_frame)
-// {
-//     //step1:init a blank point cloud whith colors.
-//     static int seq = 0;
-//     //::depth::debug::ShowImages::show( rgb_frame , "rgb_frame");
-//     // clear and set point cloud
-//     head_cloud_->clear();
-//     head_cloud_->header.frame_id = "/base_link";
-//     head_cloud_->is_dense = false;
-//     head_cloud_->header.stamp = ros::Time::now().toSec();
-//     head_cloud_->header.seq = seq++;
-//     pcl::PointXYZRGB point;
-//     int invalid_close_pixels_count = 0;
-//     int dist_1 = 0;
-//     int dist_2 = 0;
-//     int dist_3 = 0;
-//     float avg_x = 0;
-//     int valid_points_counter = 0;
-//     pcl::PointXYZRGB invalid_point;
-//     invalid_point.x = invalid_point.y = invalid_point.z = std::numeric_limits<float>::quiet_NaN();
-//     invalid_point.r = invalid_point.g = invalid_point.b = 0; // black
+void OniCamera::generatePointCloud(const cv::Mat &rgb_frame)
+{
+    //step1:init a blank point cloud whith colors.
+    static int seq = 0;
+    // clear and set point cloud
+    point_cloud_->clear();
+    point_cloud_->header.frame_id = "/base_link";
+    point_cloud_->is_dense = false;
+    // point_cloud_->header.stamp = ros::Time::now().toSec();
+    point_cloud_->header.seq = seq++;
+    pcl::PointXYZRGB point;
+    int invalid_close_pixels_count = 0;
+    int valid_points_counter = 0;
+    pcl::PointXYZRGB invalid_point;
+    invalid_point.x = invalid_point.y = invalid_point.z = std::numeric_limits<float>::quiet_NaN();
+    invalid_point.r = invalid_point.g = invalid_point.b = 0; // black
 
-//     //step3:generate point cloud
-//     //TEMI_LOG(info) << "painting point color...";
+    //step3:generate point cloud
+    openni::DepthPixel *pDepth = (openni::DepthPixel *)oni_depth_frame_.getData();
+    float px = 0, py = 0, pz = 0;
+    // BinArray depth_histogram = { 0 };
+    // DistBinArray bin_depth_sum_mm = { 0.};
+    for (int j = 0; j < ONI_HEIGHT; j++)
+    { //rows -> j
+      for (int i = 0; i < ONI_WIDTH; i++)
+      { //cols ->i
+        if (i >= 80 && i <= 240 && j >= 50 && j <= 150)
+        {
 
-//     openni::DepthPixel *pDepth = (openni::DepthPixel *)oni_depth_frame_.getData();
-//     float px = 0, py = 0, pz = 0;
-//     BinArray depth_histogram = { 0 };
-//     DistBinArray bin_depth_sum_mm = { 0.};
-//     for (int j = 0; j < ONI_HEIGHT; j++)
-//     { //rows -> j
-//       for (int i = 0; i < ONI_WIDTH; i++)
-//       { //cols ->i
-//         if (i >= 80 && i <= 240 && j >= 50 && j <= 150)
-//         {
+          if (pDepth[j * ONI_WIDTH + i] < 200)
+          {
+            invalid_close_pixels_count++;
+            point_cloud_->points.emplace_back(invalid_point);
+          }
+          else
+          {
+            //　这个函数把深度值转换为相机坐标系里的px,py,pz,相当于相机模型的作用
+            oni_rc_ = oni_converter.convertDepthToWorld(oni_depth_stream_, i, j, pDepth[j * ONI_WIDTH + i], &px, &py, &pz);
+            // 因为depth的tf和正常的相机tf不一样，是和baselink一样的，需要再转换一下
+            // 这里z(py)也要翻转一下，因为我们的相机是倒着安的
+            // tf::Vector3 point_vec = tf::Vector3(pz * 0.001, px * 0.001, py * 0.001);
+            // tf::Vector3 point_vec = tf::Vector3(px * 0.001, py * 0.001, pz * 0.001);
 
-//           if (pDepth[j * ONI_WIDTH + i] < 200)
-//           {
-//             invalid_close_pixels_count++;
-//             head_cloud_->points.emplace_back(invalid_point);
-//           }
-//           else
-//           {
-//             //　这个函数把深度值转换为相机坐标系里的px,py,pz,相当于相机模型的作用
-//             oni_rc_ = oni_converter.convertDepthToWorld(oni_depth_stream_, i, j, pDepth[j * ONI_WIDTH + i], &px, &py, &pz);
-//             // 因为depth的tf和正常的相机tf不一样，是和baselink一样的，需要再转换一下
-//             // 这里z(py)也要翻转一下，因为我们的相机是倒着安的
-//             tf::Vector3 point_vec = tf::Vector3(pz * 0.001, px * 0.001, py * 0.001);
-
-//             // if (point_vec.x() > 0.3 && point_vec.x() < 0.7)
-//             // {
-//             //   dist_1++;
-//             // }
-//             // else if (point_vec.x() > 1.3 && point_vec.x() < 1.7)
-//             // {
-//             //   dist_2++;
-//             // }
-//             // else if (point_vec.x() > 2.3 && point_vec.x() < 2.7)
-//             // {
-//             //   dist_3++;
-//             // }
-//             // avg_x += point_vec.x();
-//             // valid_points_counter++;
-//             calculateDepthHistgram(point_vec.x(), depth_histogram, bin_depth_sum_mm);
-//             point.x = point_vec.x();
-//             point.y = point_vec.y();
-//             point.z = point_vec.z();
-//             point.r = 255;
-//             point.g = 255;
-//             point.b = 255;
-// //step4.1:register point cloud with RGB(not activated now)
+            // if (point_vec.x() > 0.3 && point_vec.x() < 0.7)
+            // {
+            //   dist_1++;
+            // }
+            // else if (point_vec.x() > 1.3 && point_vec.x() < 1.7)
+            // {
+            //   dist_2++;
+            // }
+            // else if (point_vec.x() > 2.3 && point_vec.x() < 2.7)
+            // {
+            //   dist_3++;
+            // }
+            // avg_x += point_vec.x();
+            // valid_points_counter++;
+            // calculateDepthHistgram(point_vec.x(), depth_histogram, bin_depth_sum_mm);
+            // point.x = point_vec.x();
+            // point.y = point_vec.y();
+            // point.z = point_vec.z();
+            point.x = px * 0.001;
+            point.y = py * 0.001;
+            point.z = pz * 0.001;
+            point.r = 255;
+            point.g = 255;
+            point.b = 255;
+//step4.1:register point cloud with RGB(not activated now)
 // #if RGB_REGISTERATION
 //           // 对应的rgb中的点
 //           cv::Vec2i rgb_pixel = d2r.at<cv::Vec2i>(j, i);
@@ -275,7 +274,7 @@ bool OniCamera::GetOniStreamData() {
 //             if (rgb_pixel[0] == 0 && rgb_pixel[1] == 0) //depth point has no rgb point assigned,mark it as invalid.
 //             {
 //               invalid_close_pixels_count++;
-//               head_cloud_->points.emplace_back(invalid_point);
+//               point_cloud_->points.emplace_back(invalid_point);
 //               continue;
 //             }
 //             else
@@ -295,63 +294,13 @@ bool OniCamera::GetOniStreamData() {
 //           {
 //             // TEMI_LOG(info) << "point index out of 300, paint this point black. ";
 //             invalid_close_pixels_count++;
-//             head_cloud_->points.emplace_back(invalid_point);
+//             point_cloud_->points.emplace_back(invalid_point);
 //             continue;
 //           }
 // #endif
-//           head_cloud_->points.emplace_back(point);
-//         }
-//       } //end else
-//     }   //innner loop
-//   }     //outerloop
-
-//   // TEMI_LOG(debug) << "DONE! publishing PCL! " << h << " x " << w << "; " << invalid_far_pixels_count << ", " << invalid_close_pixels_count;
-//   // int pixel_index = 0;
-//   // for (int j = 0; j < h; j++) {
-//   //     for (int i = 0; i < w; i++) {
-//   //         if ( head_cloud_->points[pixel_index].label != 96 && head_cloud_->points[pixel_index].label != 0 )
-//   //             TEMI_LOG(debug) << "Weird point label! " << j << " x " << i << "; " << head_cloud_->points[pixel_index].label;
-//   //     }
-//   // }
-//   sensor_msgs::PointCloud2 pcl_to_publish;
-//   pcl_to_publish.data.clear();
-//   pcl::toROSMsg(*head_cloud_, pcl_to_publish);
-//   pcl_to_publish.header.frame_id = "/base_link";
-//   pcl_to_publish.header.stamp = ros::Time::now();
-//   // for ( sensor_msgs::PointCloud2ConstIterator<uint32_t> it( pcl_to_publish , "label" ); it != it.end(); ++it ) {
-//   //     if ( *it != 96 && *it != 0) {
-//   //         TEMI_LOG(debug) << "Weird point label! pcl_to_publish: " << *it;
-//   //     }
-//   // }
-//   pub_.publish(pcl_to_publish);
-//   // avg_x = avg_x / valid_points_counter;
-//   std::cout << "++++++++++++++++++++++++publishing point cloud +++++++++++++++++" << std::endl;
-//   // std::cout << "avg_x: " << avg_x << std::endl;
-//   std::cout << "invalid_close_pixels_count: " << invalid_close_pixels_count << std::endl;
-//   // std::cout << "dist_1: " << dist_1 << std::endl;
-//   // std::cout << "dist_2: " << dist_2 << std::endl;
-//   // std::cout << "dist_3: " << dist_3 << std::endl;
-
-//   //遍历所有的bin,找到点最多的bin，求出平均距离
-//   int max_bin = 0;
-//   int bin_num = 0;
-//   for(int i = 0; i < NUM_BINS; i ++)
-//   {
-//     if(depth_histogram.at(i) > max_bin)
-//     {
-//       max_bin = depth_histogram.at(i);
-//       bin_num = i;
-//     }
-//   }
-
-//   float avg_dist = bin_depth_sum_mm.at(bin_num) / depth_histogram.at(bin_num);
-
-//   std::cout << "avg_dist: " << avg_dist << std::endl;
-//   std::cout << "points: " << max_bin << std::endl;
-
-//   if (point_cloud_file.is_open(), std::ios::app)
-//   {
-//     point_cloud_file << "invalid_close_pixels_count," << invalid_close_pixels_count << ",avg_dist," << avg_dist << ",max_bin," << max_bin << "\n";
-//     printf("+++ Depth save result to log. +++\n");
-//   }
-// }
+          point_cloud_->points.emplace_back(point);
+        }
+      } //end else
+    }   //innner loop
+  }     //outerloop
+}

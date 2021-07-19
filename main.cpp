@@ -50,6 +50,7 @@ int main(int argc, char **argv) {
         cv::imshow("raw_depth", tmp_depth);
         cv::waitKey(1);
       }
+      oni_camera.generatePointCloud(uvc_camera.raw_rgb_);
     }
     usleep(100);
   }
