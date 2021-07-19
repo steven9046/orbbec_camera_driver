@@ -14,8 +14,8 @@
 #define RGB_REGISTERATION 0
 // // point cloud
 // #include "pcl_conversions/pcl_conversions.h"
-// #include <pcl/point_cloud.h>
-// #include <pcl/point_types.h>
+#include <pcl/point_cloud.h>
+#include <pcl/point_types.h>
 // #include <pcl/filters/extract_indices.h>
 // //ground camera tf calibraiton
 // #include <pcl/filters/statistical_outlier_removal.h>
@@ -56,14 +56,14 @@ class OniCamera : public Camera {
     // openni camera tools
     std::string depth_uri_str_;
     bool OpenOniCamera(const char* depth_uri);
-  //   bool GetOniStreamData();
-  //   // void createPointCloud(PointCloudL::Ptr cloud, float scale);
+    bool GetOniStreamData();
+    // void createPointCloud();
     void seOnitLDP(bool enable);
     std::string enumerateDevices();
   //   void publishPointCloud(const cv::Mat& rgb_frame);
     char camera_loc_;
   //   // point cloud
-  //   pcl::PointCloud<pcl::PointXYZRGB>::Ptr head_cloud_;
+    pcl::PointCloud<pcl::PointXYZRGB>::Ptr head_cloud_;
   //   ros::Publisher pub_;
   //   void calculateDepthHistgram(float dist_x, BinArray& depth_histogram, DistBinArray& bin_depth_sum_mm);
 };

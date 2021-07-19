@@ -1,3 +1,0 @@
-/home/ss/pure_c_program/test/build/CMakeFiles/rebuild_cache.dir
-/home/ss/pure_c_program/test/build/CMakeFiles/edit_cache.dir
-/home/ss/pure_c_program/test/build/CMakeFiles/hello.dir
