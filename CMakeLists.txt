@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-project(hello)
+project(orbbec_camera_driver)
 
 set (Tutorial_VERSION_MAJOR 1)
 set (Tutorial_VERSION_MINOR 0)
@@ -30,7 +30,7 @@ include_directories ("${PROJECT_SOURCE_DIR}/include")
 # add_library(uvc_camera
 #            )           
 
-add_executable(hello
+add_executable(orbbec_camera_driver
                 src/camera.cpp
                 src/uvc_camera.cpp
                 src/oni_camera.cpp
@@ -38,7 +38,7 @@ add_executable(hello
                 main.cpp
                 )
                 
-target_link_libraries(hello 
+target_link_libraries(orbbec_camera_driver 
                     ${OpenCV_LIBRARIES}
                     ${PCL_LIBRARIES}
                     ${Pangolin_LIBRARIES}

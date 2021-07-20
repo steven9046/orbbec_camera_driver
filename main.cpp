@@ -1,3 +1,21 @@
+/*****************************************************************************
+*                                                                            *
+*  Copyright (C) 2021 Steven Sun.                                        *
+*                                                                            *
+*  Licensed under the Apache License, Version 2.0 (the "License");           *
+*  you may not use this file except in compliance with the License.          *
+*  You may obtain a copy of the License at                                   *
+*                                                                            *
+*      http://www.apache.org/licenses/LICENSE-2.0                            *
+*                                                                            *
+*  Unless required by applicable law or agreed to in writing, software       *
+*  distributed under the License is distributed on an "AS IS" BASIS,         *
+*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  *
+*  See the License for the specific language governing permissions and       *
+*  limitations under the License.                                            *
+*                                                                            *
+*****************************************************************************/
+
 #include <oni_camera.h>
 #include <uvc_camera.h>
 #include <viewer.h>
@@ -48,16 +66,7 @@ int main(int argc, char **argv) {
       cv::Mat raw_depth(ONI_HEIGHT, ONI_WIDTH, CV_16UC1, pDepth);
       cv::flip(raw_depth, raw_depth, 1);
       cv::Mat tmp_depth;
-      // // float px = 0, py = 0, pz = 0;
-      // for(int j = 0; j < ONI_HEIGHT; j ++)
-      // {
-      //     for(int i = 0; i < ONI_WIDTH; i ++)
-      //     {
-      //         raw_depth.at<uint16_t>(j, i) = pDepth[j * ONI_WIDTH + i];
-      //         // std::cout << pDepth[j * ONI_WIDTH + i] << std::endl;
-      //     }
-      // }
-      // // ** DEBUG ** : show raw_depth
+      // ** DEBUG ** : show raw_depth
       raw_depth.convertTo(tmp_depth, CV_8UC1, 1. / 2.);
       if (!tmp_depth.empty()) {
         cv::namedWindow("raw_depth", 0);
