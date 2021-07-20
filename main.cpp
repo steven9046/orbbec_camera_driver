@@ -1,8 +1,17 @@
 #include <oni_camera.h>
 #include <uvc_camera.h>
+#include <viewer.h>
 
 #include <iostream>
 #include <opencv4/opencv2/opencv.hpp>
+#include <thread>  // 多线程
+
+void test() {
+  while (1) {
+    printf("testing thread...\n");
+    usleep(200);
+  }
+}
 // main函数传入参数
 // https://www.cnblogs.com/avril/archive/2010/03/22/1691477.html
 int main(int argc, char **argv) {
@@ -25,6 +34,11 @@ int main(int argc, char **argv) {
   oni_camera.seOnitLDP(false);
   // static cv::Mat raw_depth(ONI_HEIGHT, ONI_WIDTH, CV_16UC1);
   // static cv::Mat tmp_depth;
+  // viewer
+  viewer::Viewer main_viewer(480, 640, "pcl");
+  main_viewer.setInputCloud(oni_camera.point_cloud_);
+  std::thread display_loop;
+  display_loop = std::thread(&viewer::Viewer::run, &main_viewer);
 
   while (1) {
     oni_camera.GetOniStreamData();

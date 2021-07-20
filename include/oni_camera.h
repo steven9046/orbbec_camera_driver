@@ -12,6 +12,9 @@
 #define ONI_WAIT_TIMEOUT 200
 #define XN_MODULE_PROPERTY_LDP_ENABLE 0x1080FFBE
 #define RGB_REGISTERATION 0
+#define RESOULTION_X 640
+#define RESOULTION_Y 480
+#define MM2M 0.001
 // // point cloud
 // #include "pcl_conversions/pcl_conversions.h"
 #include <pcl/point_cloud.h>
@@ -59,11 +62,11 @@ class OniCamera : public Camera {
     std::string depth_uri_str_;
     bool OpenOniCamera(const char* depth_uri);
     bool GetOniStreamData();
-    // void createPointCloud();
     void seOnitLDP(bool enable);
     std::string enumerateDevices();
     void generatePointCloud(const cv::Mat& rgb_frame);
     char camera_loc_;
+    float fdx_, fdy_, u0_, v0_;
   //   // point cloud
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr point_cloud_;
   //   ros::Publisher pub_;

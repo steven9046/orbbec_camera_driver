@@ -13,7 +13,7 @@ configure_file (
 # 这里没有版本要求，用的都是最基本的功能
 find_package(OpenCV REQUIRED)
 find_package(PCL REQUIRED)
-
+find_package(Pangolin 0.4 REQUIRED)
 # uvc libs
 set(UVC_LIBS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libs/libuvc)
 set(UVC_LIBS "${UVC_LIBS_DIR}/libuvc.so")
@@ -24,6 +24,7 @@ set (OPENNI2_LIBS "${OPENNI2_LIBS_DIR}/libOpenNI2.so;${OPENNI2_LIBS_DIR}/OpenNI2
 
 include_directories (${OpenCV_INCLUDE_DIRS})
 include_directories (${PCL_INCLUDE_DIRS})
+include_directories(${Pangolin_INCLUDE_DIRS})
 include_directories ("${PROJECT_SOURCE_DIR}/include")
 
 # add_library(uvc_camera
@@ -33,11 +34,13 @@ add_executable(hello
                 src/camera.cpp
                 src/uvc_camera.cpp
                 src/oni_camera.cpp
+                src/viewer.cpp
                 main.cpp
                 )
                 
 target_link_libraries(hello 
                     ${OpenCV_LIBRARIES}
                     ${PCL_LIBRARIES}
+                    ${Pangolin_LIBRARIES}
                     ${UVC_LIBS}
                     ${OPENNI2_LIBS})
