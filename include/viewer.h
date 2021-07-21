@@ -27,11 +27,11 @@ public:
     ~Viewer();
     Viewer(int height, int width, std::string name);
     void setup();
+    void setWindowName(std::string name);
+    void setInputCloud(pcl::PointCloud<pcl::PointXYZRGB>::Ptr input_cloud);
+    void run();
     std::string window_name_;
     int window_height_, window_width_;
-    void setWindowName(std::string name);
-    void run();
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr point_cloud_;
-    void setInputCloud(pcl::PointCloud<pcl::PointXYZRGB>::Ptr input_cloud);
 };
 }
