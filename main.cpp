@@ -31,8 +31,6 @@
 #include "tensorflow/lite/model.h"
 #include "tensorflow/lite/optional_debug_tools.h"
 
-// #define LOG(x) std::cerr
-
 #define TFLITE_MINIMAL_CHECK(x)                              \
   if (!(x)) {                                                \
     fprintf(stderr, "Error at %s:%d\n", __FILE__, __LINE__); \
@@ -93,10 +91,10 @@ int main(int argc, char **argv) {
   int t_size = interpreter->tensors_size();
   for (int i = 0; i < t_size; i++) {
     if (interpreter->tensor(i)->name)
-      LOG(INFO) << i << ": " << interpreter->tensor(i)->name << ", " << interpreter->tensor(i)->bytes << ", " << interpreter->tensor(i)->type << ", "
-                << interpreter->tensor(i)->params.scale << ", " << interpreter->tensor(i)->params.zero_point;
+      std::cout << i << ": " << interpreter->tensor(i)->name << ", " << interpreter->tensor(i)->bytes << ", " << interpreter->tensor(i)->type << ", "
+                << interpreter->tensor(i)->params.scale << ", " << interpreter->tensor(i)->params.zero_point << std:: endl;
   }
-}
+
 // Run inference
 TFLITE_MINIMAL_CHECK(interpreter->Invoke() == kTfLiteOk);
 printf("\n\n=== Post-invoke Interpreter State ===\n");
