@@ -27,8 +27,27 @@ include_directories (${PCL_INCLUDE_DIRS})
 include_directories(${Pangolin_INCLUDE_DIRS})
 include_directories ("${PROJECT_SOURCE_DIR}/include")
 
-# add_library(uvc_camera
-#            )           
+# tensorflow lite
+# set(TENSORFLOW_SOURCE_DIR "/home/ss/tensorflow_src")
+# if(NOT TENSORFLOW_SOURCE_DIR)
+#   get_filename_component(TENSORFLOW_SOURCE_DIR
+#     "${CMAKE_CURRENT_LIST_DIR}/../../../../"
+#     ABSOLUTE
+#   )
+# endif()
+
+# add_subdirectory(
+#   "${TENSORFLOW_SOURCE_DIR}/tensorflow/lite"
+#   "${CMAKE_CURRENT_BINARY_DIR}/tensorflow-lite"
+#   EXCLUDE_FROM_ALL
+# )      
+
+# tflite library
+set(TFLITE_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libs/tflite)
+set(TFLITE_LIBS "${TFLITE_SOURCE_DIR}/libtensorflowlite.so")
+include_directories ("${PROJECT_SOURCE_DIR}/include")
+
+message(STATUS "TENSORFLOW_SOURCE_DIR: " ${TENSORFLOW_SOURCE_DIR})
 
 add_executable(orbbec_camera_driver
                 src/camera.cpp
@@ -43,4 +62,5 @@ target_link_libraries(orbbec_camera_driver
                     ${PCL_LIBRARIES}
                     ${Pangolin_LIBRARIES}
                     ${UVC_LIBS}
-                    ${OPENNI2_LIBS})
+                    ${OPENNI2_LIBS}
+                    ${TFLITE_LIBS})

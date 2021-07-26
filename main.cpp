@@ -23,6 +23,18 @@
 #include <iostream>
 #include <opencv4/opencv2/opencv.hpp>
 #include <thread>
+// // tflite
+#include <cstdio>
+#include "tensorflow/lite/interpreter.h"
+#include "tensorflow/lite/kernels/register.h"
+#include "tensorflow/lite/model.h"
+#include "tensorflow/lite/optional_debug_tools.h"
+
+#define TFLITE_MINIMAL_CHECK(x)                              \
+  if (!(x)) {                                                \
+    fprintf(stderr, "Error at %s:%d\n", __FILE__, __LINE__); \
+    exit(1);                                                 \
+  }
 
 void test() {
   while (1) {
@@ -50,6 +62,37 @@ int main(int argc, char **argv) {
   main_viewer.setInputCloud(oni_camera.point_cloud_);
   std::thread display_loop;
   display_loop = std::thread(&viewer::Viewer::run, &main_viewer);
+
+  //--------------------------------------------------
+  const char* filename = "/home/ss/pure_c_program/orbbec_camera_driver/mssd_lite.tflite";
+  // Load model
+  std::unique_ptr<tflite::FlatBufferModel> model =
+      tflite::FlatBufferModel::BuildFromFile(filename);
+  // Build the interpreter with the InterpreterBuilder.
+  // Note: all Interpreters should be built with the InterpreterBuilder,
+  // which allocates memory for the Interpreter and does various set up
+  // tasks so that the Interpreter can read the provided model.
+  tflite::ops::builtin::BuiltinOpResolver resolver;
+  tflite::InterpreterBuilder builder(*model, resolver);
+  std::unique_ptr<tflite::Interpreter> interpreter;
+  builder(&interpreter);
+  TFLITE_MINIMAL_CHECK(interpreter != nullptr);
+
+  // Allocate tensor buffers.
+  TFLITE_MINIMAL_CHECK(interpreter->AllocateTensors() == kTfLiteOk);
+  printf("=== Pre-invoke Interpreter State ===\n");
+  tflite::PrintInterpreterState(interpreter.get());
+
+  // Fill input buffers
+  // TODO(user): Insert code to fill input tensors.
+  // Note: The buffer of the input tensor with index `i` of type T can
+  // be accessed with `T* input = interpreter->typed_input_tensor<T>(i);`
+
+  // Run inference
+  TFLITE_MINIMAL_CHECK(interpreter->Invoke() == kTfLiteOk);
+  printf("\n\n=== Post-invoke Interpreter State ===\n");
+  tflite::PrintInterpreterState(interpreter.get());
+  //--------------------------------------------------
 
   // Get depth data and show depth image.
   while (1) {
