@@ -15,10 +15,16 @@
  *  limitations under the License.                                            *
  *                                                                            *
  *****************************************************************************/
+#define LINUX_X86
+#ifndef LINUX_X86
+#define LINUX_ARM
+#endif
 
 #include <oni_camera.h>
 #include <uvc_camera.h>
+#ifdef LINUX_X86
 #include <viewer.h>
+#endif
 
 #include <iostream>
 #include <opencv4/opencv2/opencv.hpp>
@@ -30,6 +36,7 @@
 #include "tensorflow/lite/kernels/register.h"
 #include "tensorflow/lite/model.h"
 #include "tensorflow/lite/optional_debug_tools.h"
+
 
 #define TFLITE_MINIMAL_CHECK(x)                              \
   if (!(x)) {                                                \
@@ -58,12 +65,13 @@ int main(int argc, char **argv) {
   oni_camera.depth_uri_str_ = oni_camera.enumerateDevices();
   oni_camera.openCamera();
   oni_camera.seOnitLDP(false);
+#ifdef LINUX_X86
   // Viewer for point cloud
   viewer::Viewer main_viewer(480, 640, "pcl");
   main_viewer.setInputCloud(oni_camera.point_cloud_);
   std::thread display_loop;
   display_loop = std::thread(&viewer::Viewer::run, &main_viewer);
-
+#endif
   // //--------------------------------------------------
   // const char *filename = "/home/ss/pure_c_program/orbbec_camera_driver/ssd_lite_v1_meta.tflite";  // mssd_lite
   // // Load model
