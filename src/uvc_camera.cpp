@@ -184,6 +184,8 @@ void UVCCamera::ImageCallback(uvc_frame_t *frame) {
   }
 
   cv::Mat img = cv::Mat(config_.height, config_.width, CV_8UC3, rgb_frame_->data);  // cv::Scalar(0, 0, 0)
+  raw_rgb_ = img;
+  // cv::resize(img, img, cv::Size(300, 300));
   cv::namedWindow("rgb", 0);
   cv::imshow("rgb", img);
   cv::waitKey(1);
@@ -215,3 +217,7 @@ enum uvc_frame_format UVCCamera::GetVideoMode(std::string vmode) {
 void UVCCamera::closeCamera() {}
 
 void UVCCamera::setParams() { printf("Set params for child class UVCCamera.\n"); }
+
+cv::Mat UVCCamera::getImage(){
+  return raw_rgb_;
+}

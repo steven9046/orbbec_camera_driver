@@ -73,6 +73,11 @@ class UVCCamera : public Camera {  //
    */
   void closeCamera();
 
+  /**
+   * @brief Get rgb image from uvc_camera 
+   */
+  cv::Mat getImage();
+  
   UVCCameraConfig config_;  // Camera config
   cv::Mat raw_rgb_;         // store rgb image
   int camera_loc_;          // camera bus number
