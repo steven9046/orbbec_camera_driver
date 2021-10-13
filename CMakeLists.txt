@@ -47,12 +47,12 @@ endif()
 #   EXCLUDE_FROM_ALL
 # )      
 
-# tflite library
-set(TFLITE_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libs/${CMAKE_SYSTEM_PROCESSOR}/tflite)
-set(TFLITE_LIBS "${TFLITE_SOURCE_DIR}/libtensorflowlite.so")
-include_directories ("${PROJECT_SOURCE_DIR}/include")
+# # tflite library
+# set(TFLITE_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/libs/${CMAKE_SYSTEM_PROCESSOR}/tflite)
+# set(TFLITE_LIBS "${TFLITE_SOURCE_DIR}/libtensorflowlite.so")
+# include_directories ("${PROJECT_SOURCE_DIR}/include")
 
-message(STATUS "TENSORFLOW_SOURCE_DIR: " ${TENSORFLOW_SOURCE_DIR})
+# message(STATUS "TENSORFLOW_SOURCE_DIR: " ${TENSORFLOW_SOURCE_DIR})
 
 add_executable(orbbec_camera_driver
                 src/camera.cpp
@@ -61,7 +61,24 @@ add_executable(orbbec_camera_driver
                 src/viewer.cpp
                 main.cpp
                 )
-                
+# # For InferenceHelper
+# set(INFERENCE_HELPER_DIR ${CMAKE_CURRENT_LIST_DIR}/src/InferenceHelper/)
+# set(INFERENCE_HELPER_ENABLE_TFLITE ON CACHE BOOL "TFLITE")
+# set(INFERENCE_HELPER_ENABLE_TFLITE_DELEGATE_XNNPACK ON CACHE BOOL "TFLITE_XNNPACK")
+# add_subdirectory(${INFERENCE_HELPER_DIR}/inference_helper inference_helper)
+# target_include_directories(orbbec_camera_driver PUBLIC ${INFERENCE_HELPER_DIR}/inference_helper)
+# target_link_libraries(orbbec_camera_driver InferenceHelper)
+ 
+# # Link Common Helper module
+# add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/src/common_helper common_helper)
+# target_include_directories(orbbec_camera_driver PUBLIC ${CMAKE_CURRENT_LIST_DIR}/src/common_helper)
+# target_link_libraries(orbbec_camera_driver CommonHelper)
+
+# Link ImageProcessor module
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/src/image_processor image_processor)
+target_include_directories(orbbec_camera_driver PUBLIC ${CMAKE_CURRENT_LIST_DIR}/src/image_processor)
+target_link_libraries(orbbec_camera_driver ImageProcessor)
+
 target_link_libraries(orbbec_camera_driver 
                     ${OpenCV_LIBRARIES}
                     ${PCL_LIBRARIES}
@@ -73,4 +90,7 @@ if (CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64")
     target_link_libraries(orbbec_camera_driver
                             ${Pangolin_LIBRARIES})
 endif()
+
+file(COPY ${CMAKE_CURRENT_LIST_DIR}/resource DESTINATION ${CMAKE_BINARY_DIR}/)
+add_definitions(-DRESOURCE_DIR="${CMAKE_BINARY_DIR}/resource/")
                     
